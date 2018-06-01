@@ -1,0 +1,17 @@
+Source: matterircd
+Section: net
+Priority: optional
+Maintainer: Tomas Janousek <tomi@nomi.cz>
+Build-Depends:
+ debhelper (>= 10),
+ golang-go (>= 2:1.8~) | golang-1.8-go,
+Standards-Version: 4.1.4.1
+Homepage: https://github.com/42wim/matterircd
+#Vcs-Git: https://anonscm.debian.org/collab-maint/matterircd.git
+#Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/matterircd.git
+
+Package: matterircd
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: TODO
+ TODO
