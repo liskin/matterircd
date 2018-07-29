@@ -42,11 +42,26 @@ func login(u *User, toUser *User, args []string, service string) {
 	}
 	if service == "slack" {
 		var err error
-		if len(args) != 1 {
-			u.MsgUser(toUser, "need LOGIN <token>")
+		fmt.Println(len(args))
+		if len(args) != 1 && len(args) != 3 {
+			u.MsgUser(toUser, "need LOGIN <team> <login> <pass> or LOGIN <token>")
 			return
 		}
-		u.Token = args[len(args)-1]
+		fmt.Println(len(args))
+		if len(args) == 1 {
+			u.Token = args[len(args)-1]
+		}
+		if u.Token == "help" {
+			u.MsgUser(toUser, "need LOGIN <team> <login> <pass> or LOGIN <token>")
+			return
+		}
+		if len(args) == 3 {
+			cred := &MmCredentials{}
+			cred.Team = args[0]
+			cred.Login = args[1]
+			cred.Pass = args[2]
+			u.Credentials = cred
+		}
 		if u.sc != nil {
 			fmt.Println("login, starting logout")
 			err := u.logoutFromSlack()
@@ -70,6 +85,9 @@ func login(u *User, toUser *User, args []string, service string) {
 			return
 		}
 		u.MsgUser(toUser, "login OK")
+		if u.Credentials != nil && u.Token != "" {
+			u.MsgUser(toUser, "token used: "+u.Token)
+		}
 		return
 	}
 
@@ -156,6 +174,7 @@ func login(u *User, toUser *User, args []string, service string) {
 func search(u *User, toUser *User, args []string, service string) {
 	if service == "slack" {
 		u.MsgUser(toUser, "not implemented")
+		return
 	}
 	postlist := u.mc.SearchPosts(strings.Join(args, " "))
 	if postlist == nil || len(postlist.Order) == 0 {
@@ -188,6 +207,7 @@ func search(u *User, toUser *User, args []string, service string) {
 func searchUsers(u *User, toUser *User, args []string, service string) {
 	if service == "slack" {
 		u.MsgUser(toUser, "not implemented")
+		return
 	}
 	users, resp := u.mc.Client.SearchUsers(&model.UserSearch{Term: strings.Join(args, " ")})
 	if resp.Error != nil {
@@ -202,6 +222,7 @@ func searchUsers(u *User, toUser *User, args []string, service string) {
 func scrollback(u *User, toUser *User, args []string, service string) {
 	if service == "slack" {
 		u.MsgUser(toUser, "not implemented")
+		return
 	}
 	if len(args) != 2 {
 		u.MsgUser(toUser, "need SCROLLBACK <channel> <lines>")

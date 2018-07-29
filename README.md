@@ -40,7 +40,7 @@ Start the service.
 ```
 
 # Compatibility
-* Matterircd works with slack and mattermost 3.8.x - 3.10.0, 4.x
+* Matterircd works with slack and mattermost 3.8.x - 3.10.0, 4.x, 5.x
 
 Master branch of matterircd should always work against latest STABLE mattermost release.
 
@@ -157,6 +157,12 @@ Login
 ```
 /msg slack login <token>
 ```
+
+Or use team/login/pass to login
+```
+/msg slack login <team> <login> <password>
+```
+After login it'll show you a token you can use for the token login
 
 ## Docker
 
